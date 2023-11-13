@@ -84,7 +84,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="texture\bmproutine.cpp" />
     <ClCompile Include="texture\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="texture\bmproutine.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

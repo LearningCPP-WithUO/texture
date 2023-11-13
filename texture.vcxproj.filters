@@ -14,5 +14,13 @@
     <ClCompile Include="texture\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="texture\bmproutine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="texture\bmproutine.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
