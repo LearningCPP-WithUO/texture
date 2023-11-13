@@ -87,7 +87,7 @@ int main(int argc, const char * argv[]) {
         //  X  R  R  R  R  R  G  G  G  G  G  B  B  B  B  B
         
         // Lets create the full file path for the two files we are interested in:
-        auto idxpath = UOPATH / std::filesystem::path("texidx.mul") ;
+        auto idxpath = UOPATH / std::filesystem::path("texidx.mul") ;  // the / operator concatenates file path types, and inserts a directory separator between them
         auto mulpath = UOPATH / std::filesystem::path("texmaps.mul") ;
         
         // Try to open the files
@@ -127,24 +127,28 @@ int main(int argc, const char * argv[]) {
                     mul.read(reinterpret_cast<char*>(data.data()),length);
                     // Data now has our texture data
                     auto width = (flag == 1?128:64) ; // If the flag is 1, it is 128x128, otherwise 64x64
-                    auto dib = DibHeader(width, width) ;
+                    // Create our two BMP structures we will use
+                    auto dib = DibHeader(width, width) ; // Since the textures we are dealing with are a square, we can use width for both height and width
                     auto bmp = BmpHeader() ; // our bmp file header
-                    auto pad = dib.padBytes() ;
+                    auto pad = dib.padBytes() ; // Doe we hav any pad bytes we need to add for each line (we dont, but we have this here to show what one should be worried about).
                     // Now we can calculate our total file size
                     bmp.bmpFileSize = 14 + 40 + (((width*2)+ pad) * width); // size of the file header + size of dib header + size of pixeldata (including pad if any)
-                    bmp.dataOffset = 54 ;
+                    bmp.dataOffset = 54 ; // Since we are not using pallette, we know the pixel data will be the size of the bmp file header, plus the size of the DIB headers
                     // Now lets create our file
-                    char filestring[11] ;
-                    filestring[10] = 0 ;
+                    char filestring[11] ; // We will make a character string space to hold the file name
+                    filestring[10] = 0 ; // We will "null" terminate the string (we should set the entire array to 0, but since we "KNOW" we will fill the rest with characters from our sprintnf, we can get aways with this.
                     std::snprintf(filestring, 11, "0x%04X.bmp",entrynum); // make the file name just be the entry number in hex. Make all entry names be 4 characters, and pad with 0 (what the 04 does). Upper case the hex (why capital X)
-                    auto output = std::ofstream(filestring,std::ios::binary) ;
-                    bmp.save(output);
-                    dib.save(output) ;
+                    auto output = std::ofstream(filestring,std::ios::binary) ;  // Create the bmp file
+                    bmp.save(output); // Write the bmp header to the file
+                    dib.save(output) ; // Write the dib header to the file
+                    // Create a "zero" piece of data to write for any pad values
                     auto zero = std::uint8_t(0) ;
                     // Remember the BMP starts with the scan lines inverted, so we have to invert it here
+                    // This will write data line by line, so we can add pad values if we had any
                     for (auto i = 0 ; i < width;i++){
-                        auto offset = ((width -i)-1) * ((width*2)+pad);
+                        auto offset = ((width -i)-1) * ((width*2)+pad); // THis is calculating the offset to put the bottom row first in the bmp file (scan lines are reversed)
                         output.write(reinterpret_cast<const char*>(data.data())+ offset, width*2) ;
+                        // Now write any pad bytes we ned
                         for (auto z=0 ; z < pad;z++) {
                             output.write(reinterpret_cast<char*>(&zero),1) ;
                         }
