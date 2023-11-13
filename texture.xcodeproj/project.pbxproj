@@ -32,6 +32,7 @@
 		565A11512B00FF3D00E74EA8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		565A11532B01112500E74EA8 /* bmproutine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = bmproutine.cpp; sourceTree = "<group>"; };
 		565A11542B01112500E74EA8 /* bmproutine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bmproutine.hpp; sourceTree = "<group>"; };
+		565A11562B0297C300E74EA8 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +49,7 @@
 		565A113A2AFE600700E74EA8 = {
 			isa = PBXGroup;
 			children = (
+				565A11562B0297C300E74EA8 /* CMakeLists.txt */,
 				565A11512B00FF3D00E74EA8 /* .gitignore */,
 				565A114D2AFFBDD700E74EA8 /* windows */,
 				565A11452AFE600700E74EA8 /* texture */,
