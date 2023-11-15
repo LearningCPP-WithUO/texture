@@ -164,7 +164,7 @@ int main(int argc, const char * argv[]) {
         std::cerr << e.what()<< std::endl;
         return_value = EXIT_FAILURE;
     }
-    // If it is an excpetion that is not based off std::exception
+    // If it is an exception that is not based off std::exception
     catch(...) {
         std::cerr << "Unknown execption" << std::endl;
         return_value = EXIT_FAILURE;
