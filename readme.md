@@ -5,3 +5,9 @@ There is a macOS Xcode project and a VS2022 community edition solution available
 One can obtain the client files from https://uo.com/client-download/ and select the Classic Client option. Once the client is downloaded, start it one time (this patches the data files, to the latest versions). One does NOT need to run the client again, nor need any type of account.  The two files should be placed in a directory that is speciied in the main.cpp code (there is a OS specific Preprocessor define block that specifies the location).  The program will generate a bmp file for each texture graphic that is contained in the UO data files, and place them in the directory that the program is run from.  The file names will be the hex id for the texture graphic.
 # Future
 My hope is this can serve as a starting point of understanding a real life example of a programming task: Convert the graphic data from one format to another format.  This is not optmized code, and an excellent task for anyone using this to gain some understanding, would be to make changes to improve the performance and quality of the code.
+# Exercise  
+There are several exercises one can do to get a better understanding of using c++.  The following are just suggestions:  
+1) Have the user specify the texture ids that are to be extraced, versuse extracting all the graphics  
+2) Specify the texmaps.mul and texidx.mul files on the command line, versus hardcoding.  
+3) Improve the performance by removing redundant creation and moves of temporarary data structures  
+4) Choose another graphic format for saves  
