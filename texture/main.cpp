@@ -116,8 +116,8 @@ int main(int argc, const char * argv[]) {
             idx.read(reinterpret_cast<char*>(&flag),4) ;
             if (idx.gcount()==4) {  // we want to ensure we read 4 bytes with the last read
                 
-                // We did!, not see if the offset and length are valid
-                if (offset != 0xFFFFFFFF && length != 0 && length != 0xFFFFFFFF) { // We check to ensure offset is not "-1", length not 0 (no bytes), nor -1
+                // We did!, now see if the offset and length are valid
+                if (offset != 0xFFFFFFFF && length != 0 && length != 0xFFFFFFFF) { // We check to ensure offset is not "-1" and length not 0 (no bytes), nor -1
                     // Ok, this entry is pointing to valid data!
                     // we want to read the data from the file.
                     // We will do this with a vector, but a unique_ptr would be a valid alternative
