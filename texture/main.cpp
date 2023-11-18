@@ -146,15 +146,24 @@ int main(int argc, const char * argv[]) {
                     // Remember the BMP starts with the scan lines inverted, so we have to invert it here
                     // This will write data line by line, so we can add pad values if we had any
                     for (auto i = 0 ; i < width;i++){
-                        auto offset = ((width -i)-1) * ((width*2)+pad); // THis is calculating the offset to put the bottom row first in the bmp file (scan lines are reversed)
+                        // We need the offset to the start of the pixel data for each line. The pixel data is 2 bytes, and we need to take a row of it (so width value) at a time
+                        // so to index into the data we do the following:
+                        // the width of the line minus the line we are on (remember, we are going backwords) and the subtract one from that (we are zero index).
+                        // So say we are we 128 x 128 (remember, width/height are the same).
+                        // The fist time through the loop, the index (i) is zero.  But since we want to reverse the order (we want to start with line 127(0-127),
+                        // we subtractd the index from with width (128 - 0), so that would put us at 128. Since we are zero indexed, we subtract 1, and get 127
+                        // which is what we want, the last row. The second time through index is 1, so we get (128-1) -1 which is 126, and so on.  The last value
+                        // is 127 (so  (128-127)-1 which is 0, so the first row (but we write it last, again reversed).
+                        auto offset = ((width -i)-1) ; // THis is calculating the offset to put the bottom row first in the bmp file (scan lines are reversed)
                         output.write(reinterpret_cast<const char*>(data.data())+ offset, width*2) ;
-                        // Now write any pad bytes we ned
+                        // Now write any pad bytes we need  (in this case, we wont have any, since 64x64 or 128x128 16 bit values, will always be a multiple of
+                        // of 32 bytes per line, so we dont need any padding bytes to meet the specification. But we have it for demonstrations purposes.
                         for (auto z=0 ; z < pad;z++) {
                             output.write(reinterpret_cast<char*>(&zero),1) ;
                         }
                     }
                 }
-                entrynum++ ; // Increment the entry counter to the next one
+                entrynum++ ; // Increment the entry counter to the next texture id
             }
         }
         std::cout <<"Processed " << entrynum << " entries" << std::endl;
