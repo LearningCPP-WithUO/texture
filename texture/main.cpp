@@ -42,7 +42,7 @@ auto UOPATH = std::filesystem::path("uodata");  // This will look in "uodata" th
  The second parameter, is an array of character strings.  There is always one parameter passed,
  and that is the program name itself (so you can see how the program was initialed).
  So the command:
-    myprogram this is a test
+ myprogram this is a test
  would have argc set to 5, and argv would have five entries;
  argv[0] = myprogram
  argv[1] = this
@@ -101,7 +101,7 @@ int main(int argc, const char * argv[]) {
             // For some reason we could not open the file!
             throw std::runtime_error("Unable to open the data file: "s + mulpath.string()); // Note the use of the "s" at the end of the first string. We want to do concantation with +, and std::strings can do that.
         }
-
+        
         //
         auto entrynum = 0 ; // This will be our counter so we know what entry number we are on.
         auto offset = std::uint32_t(0) ; // This is what we will read into for our offset
@@ -110,8 +110,8 @@ int main(int argc, const char * argv[]) {
         
         while (idx.good() && !idx.eof()){  //Loop while the stream is good and not end of file
             idx.read(reinterpret_cast<char*>(&offset), 4) ; // fstreams need a char* for the buffer that data will be read into. So we take the address of our variable (&)
-                                                            // That would make a std::uint32_t*.  We use reinterpret_cast to make it a char*
-                                                            // The 4 is the number of bytes to read
+            // That would make a std::uint32_t*.  We use reinterpret_cast to make it a char*
+            // The 4 is the number of bytes to read
             idx.read(reinterpret_cast<char*>(&length),4) ;
             idx.read(reinterpret_cast<char*>(&flag),4) ;
             if (idx.gcount()==4) {  // we want to ensure we read 4 bytes with the last read
@@ -154,7 +154,7 @@ int main(int argc, const char * argv[]) {
                         // we subtractd the index from with width (128 - 0), so that would put us at 128. Since we are zero indexed, we subtract 1, and get 127
                         // which is what we want, the last row. The second time through index is 1, so we get (128-1) -1 which is 126, and so on.  The last value
                         // is 127 (so  (128-127)-1 which is 0, so the first row (but we write it last, again reversed).
-                        auto offset = ((width -i)-1) ; // THis is calculating the offset to put the bottom row first in the bmp file (scan lines are reversed)
+                        auto offset = ((width -i)-1) * (width*2) ; // THis is calculating the offset to put the bottom row first in the bmp file (scan lines are reversed)
                         output.write(reinterpret_cast<const char*>(data.data())+ offset, width*2) ;
                         // Now write any pad bytes we need  (in this case, we wont have any, since 64x64 or 128x128 16 bit values, will always be a multiple of
                         // of 32 bytes per line, so we dont need any padding bytes to meet the specification. But we have it for demonstrations purposes.
@@ -162,6 +162,7 @@ int main(int argc, const char * argv[]) {
                             output.write(reinterpret_cast<char*>(&zero),1) ;
                         }
                     }
+                    
                 }
                 entrynum++ ; // Increment the entry counter to the next texture id
             }
@@ -177,7 +178,7 @@ int main(int argc, const char * argv[]) {
     catch(...) {
         std::cerr << "Unknown execption" << std::endl;
         return_value = EXIT_FAILURE;
-
+        
     }
     // return our return value
     return return_value;
